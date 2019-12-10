@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="utf-8" />
+		<title>在线计算器CSS+DIV实现</title>
+		
+		<style>
+			.outer {
+				width:  450px;
+				height: 515px;
+				background-color: darkgray;
+				margin: auto;
+				border-radius:  10px;
+			}
+			.circle {
+	     		 width: 97%;
+	     		 height: 45px;
+	      		 border: solid 0px red;
+	      		 margin: auto;
+      		}
+    		.circle div{
+	      		 width:20px;
+	      		 height:20px;
+	      		 float: left;
+	    		 margin-left:20px;
+	    		 margin-top:10px;
+	    		 border-radius:50%;
+    		}
+			.bg-white{
+				background-color: floralwhite;
+			}
+			.bg-blue {
+				background-color: darkblue;
+			}
+			.bg-red {
+				background-color: orangered;
+			}
+			.result-box {
+				width: 97%;
+				height: 50px;
+				margin: auto;
+				margin-bottom: 10px;
+				text-align: center;
+			}
+			#result {
+				width: 98%;
+				height: 97%;
+				margin: 0;
+				text-align: right;
+				font-size: 46px;
+				border: solid 2px orangered;
+			}
+					
+			.button {
+				width: 99%;
+				height: 420px;
+				margin: 10px auto;
+				
+			}
+			
+			.button div {
+				width: 24%;
+				height: 80px;
+				margin: 0px;
+				background-color: #808080;
+				float: left;
+				font-size: 30px;
+				text-align: center;
+				line-height: 80px;
+				font-family: "微软雅黑";
+				box-shadow:inset 1px 1px 10px 1px #000000 ;
+				
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+			}
+			
+			.button div:hover {
+				background-color: gainsboro;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="outer">
+			<div class="circle">
+				<div class="bg-red"></div>
+				<div class="bg-blue"></div>
+				<div class="bg-white"></div>
+			</div>
+			<div class="result-box">
+				<input type="text" id="result" onkeydown="checkInput()" onkeyup="checkInput()" />
+			</div>
+			<div class="button">
+				<div onclick="clearResult()">AC</div>
+				<div onclick="switchSymbol()">+/-</div>
+				<div onclick="clickSymbol('%')">%</div>				
+				<div onclick="clickSymbol('/')">÷</div>				
+				<div onclick="clickButton('7')">7</div>				
+				<div onclick="clickButton('8')">8</div>				
+				<div onclick="clickButton('9')">9</div>				
+				<div onclick="clickSymbol('*')">*</div>				
+				<div onclick="clickButton('4')">4</div>				
+				<div onclick="clickButton('5')">5</div>				
+				<div onclick="clickButton('6')">6</div>				
+				<div onclick="clickSymbol('-')">-</div>				
+				<div onclick="clickButton('1')">1</div>				
+				<div onclick="clickButton('2')">2</div>				
+				<div onclick="clickButton('3')">3</div>				
+				<div onclick="clickSymbol('+')">+</div>
+				<div onclick="backSpace()"><-</div>
+				<div onclick="clickButton('0')">0</div>							
+				<div onclick="clickPoint()">.</div>				
+				<div onclick="calcResult()">=</div>				
+			</div>
+		</div>
+	</body>
+	
+
+	
+		<script>
+			var isInoutSymbol = false;
+			var isInputPoint = false;
+			function clickButton(number) {
+				var result = document.getElementById('result').value;
+				if (result.length <=18 ){
+					document.getElementById('result').value += number;
+					isInoutSymbol = false;
+				}
+				else {
+					aler("本计算器只允许输入18位长度。")
+				}
+			}
+			function clickSymbol(symbol){
+				if (document.getElementById('result').value.length>0){
+					if (isInoutSymbol == false){
+						document.getElementById('result').value += symbol;
+						isInoutSymbol = true;
+						isInputPoint = false;
+					}
+				}
+			}
+			function clearResult() {
+				document.getElementById('result').value="";
+			}
+			function switchSymbol(){
+				var result = document.getElementById('result');
+				var code = result.value.charCodeAt(0);
+				if (code == 45) {
+					result.value = result.value.substring(1);
+				}
+				else {
+					result.value = "-"+result.value;
+				}
+				//var result = document.getElementById('result').value;
+				//document.getElementById('result').value = 0-result;
+			}
+			function calcResult () {
+				var result = document.getElementById('result');
+				try {
+					if (result.value.length >=3) {
+						result.value = eval(result.value);
+					}
+				}
+				catch(e) {
+					result.value = "你输入的表达式有误！"
+				}
+			}
+			function clickPoint () {
+				if (isInputPoint == false) {
+					document.getElementById('result').value += ".";
+					isInoutSymbol = true;
+					isInputPoint = true;
+				}
+			}
+			function backSpace () {
+				var result = document.getElementById('result').value;
+				var newResult = result.substring(0,result.length-1);
+				document.getElementById('result').value = newResult;
+			}
+			function checkInput (){
+				var result = document.getElementById("result");
+				var code = result.value.charCodeAt(result.value.length-1);
+				if(!((code >= 48 && code <= 57) || code == 45 || code == 46 || code == 37 || code == 42 || code == 43 || code == 47)){
+					result.value = result.value.substr(0,result.value.length-1);
+				}
+			}
+		</script>
+</html>
